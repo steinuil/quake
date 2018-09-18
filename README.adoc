@@ -1,0 +1,262 @@
+= QuakeSpasm
+
+
+== About
+
+http://quakespasm.sourceforge.net[QuakeSpasm] is a modern, cross-platform
+Quake 1 engine based on http://www.celephais.net/fitzquake[FitzQuake].
+
+It includes support for 64 bit CPUs and custom music playback, a new
+sound driver, some graphical niceities, and numerous bug-fixes and
+other improvements.
+
+QuakeSpasm utilizes either the SDL or SDL2 frameworks, so choose
+which one works best for you.  SDL is probably less buggy, but SDL2
+has nicer features and smoother mouse input - though no CD support.
+
+
+== Downloads
+
+* Project Downloads: +
+  http://quakespasm.sourceforge.net/download.htm
+
+* Automatic Builds: +
+  http://quakespasm.ericwa.com/job/quakespasm-sdl2/
+
+
+== Hints
+
+Visit the homepage http://www.celephais.net/fitzquake[FitzQuake] for
+a full run-down of the engine's commands and variables.
+
+* To disable some changes, use `quakespasm -fitz`
+
+* QuakeSpasm's custom data is stored in `quakespasm.pak`. Install
+  this file alongside your id1 directory to enable the custom console
+  background and other minor features.
+
+* For different sound backend drivers use:
++
+  SDL_AUDIODRIVER=DRIVER ./quakespasm
++
+where DRIVER may be alsa, dsp, pulse, esd...
+
+* Shift+Escape draws the Console.
+
+* From the console, use UP to browse the command line history and TAB
+  to autocomplete command and map names.
+
+* There is currently no CD Music volume support and SDL2 doesn't
+  support CD audio. cd_sdl.c needs replacing with cd_linux.c,
+  cd_bsd.c etc..
+
+* In windows, alternative CD drives are accessible by
+  `quakespasm -cddev F` (for example)
+
+* QuakeSpasm allows loading new games (mods) on the fly with
+  `game GAMENAME {-quoth/hipnotic/rogue}`
+
+* Use `quakespasm -condebug` to save console log to `qconsole.log`.
+  SDL2 builds no longer generate stdout.txt/stderr.txt.
+
+
+=== Music Playback
+
+QuakeSpasm can play various external music formats, including MP3, OGG
+and FLAC.
+
+* Tracks should be named like `track02.ogg`, `track03.ogg`... (there
+  is no track01) and placed into `Quake/id1/music`.
+
+* Unix users may need some extra libraries installed: `libmad` or
+  `libmpg123` for MP3, and `libogg` and `libvorbis` for OGG.
+
+* As of 0.90.0, music is played back at 44100 Hz by default with no
+  need to adjust `-sndspeed`.
+
+* Use the `-noextmusic` option to disable this feature.
+
+* See `MUSIC.adoc` for more details.
+
+
+=== Controller Support
+
+The SDL2 variant of QuakeSpasm supports Xbox 360 style game
+controllers.
+
+The default configuration uses the left analog stick for movement and
+the right for looking.
+
+If your controller doesn't work you can try placing
+https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt[this file]
+in your Quake directory, it is a community-maintained database that
+adds support for more controllers to SDL2.
+
+
+==== Cvars
+
+`joy_deadzone`:: Fraction of the stick travel to be deadzone, between
+  0 and 1. Default 0.175.
+
+`joy_deadzone_trigger`:: Fraction of trigger range required to
+  register a button press on the analog triggers, between 0 and 1.
+  Default 0.2.
+
+`joy_sensitivity_yaw/pitch`:: Max angular speed in degrees/second
+  when looking. Defaults are 300 for yaw (turning left/right) and 150
+  for pitch (up/down).
+
+`joy_exponent`:: For the look stick, the stick displacement (between
+  0 and 1) is raised to this power. Default is 3. A value of 1 would
+  give a linear relationship between stick displacement and fraction
+  of the maximum angular speed.
+
+`joy_invert`:: Set to 1 to invert the vertical axis of the look
+  stick.
+
+`joy_swapmovelook`:: Set to 1 to swap the left and right analog stick
+  functions. Default 0, move on the left stick, look on the right
+  stick.
+
+`joy_enable`:: Set to 0 to disable controller support. Default 1.
+
+
+==== Buttons
+
+Some of the controller buttons are hardcoded to allow navigating the
+menu:
+
+[horizontal]
+Back:: alias for TAB
+Start:: alias for ESC
+DPad, analog sticks:: mapped to arrow keys
+A Button:: alias for ENTER in menus
+B Button:: alias for ESC in menus
+
+These buttons can be bound normally:
+
+[horizontal]
+LTRIGGER:: Left trigger
+RTRIGGER:: Right trigger
+LSHOULDER:: Left shoulder button
+RSHOULDER:: Right shoulder button
+LTHUMB:: Clicking the left thumbstick
+RTHUMB:: Clicking the right thumbstick
+ABUTTON:: A button
+BBUTTON:: B button
+XBUTTON:: X button
+YBUTTON:: Y button
+
+quakespasm.pak contains a default.cfg which has been updated to give
+some default bindings. L/R shoulder buttons are bound to weapon
+switching, and L/R triggers are jump and attack.
+
+The controller support started as Jeremiah Sypult's implementation in
+QuakeSpasm-Rift and also uses ideas and code from LordHavoc
+(DarkPlaces).
+
+
+== Compiling and Installation
+
+QuakeSpasm's (optional) custom data is now stored in the file
+quakespasm.pak. This file should be placed alongside your quakespasm
+binary and id1 directory.
+
+To checkout the latest version of QuakeSpasm, do:
+
+  svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm
+
+
+=== Linux/Unix
+
+After extracting the source tarball, browse the Makefile and edit the
+music streaming options, then
+
+  make
+  cp quakespasm /usr/local/games/quake (for example)
+
+Compile time options include
+
+* `DO_USERDIRS=1` to include user directories support
+* `DEBUG=1` for debugging
+* `SDL_CONFIG=/PATH/TO/SDL-CONFIG` for unusual SDL installations
+* `USE_SDL2=1` to compile against SDL2 instead of SDL-1.2
+
+Streaming music playback requires `libmad` or `libmpg123` for MP3, and
+`libogg` and `libvorbis` for OGG files.
+
+The project can also be built with Codeblocks (project files included).
+
+
+=== Windows
+
+The QuakeSpasm developers cross-compile windows binaries using
+http://www.mingw.org[MinGW] and http://mingw-w64.sf.net[MinGW-w64].
+
+The project can also be built using Visual Studio 2005 (or newer).
+
+=== Mac OS X
+
+A QuakeSpasm App (including program launcher and update framework) can
+be made using the XCode template found in the MacOSX directory.
+
+Alternatively, have a look at Makefile.darwin for more instructions on
+building from a console.
+
+
+== Known Bugs
+
+Brightness issues should be fixed with GLSL gamma in 0.90.1, if your
+system supports OpenGL 2. For reference on older systems:
+
+Some versions of Xorg and SDL have brightness issues.
+Try setting `export SDL_VIDEO_X11_NODIRECTCOLOR=1`, or if you have
+Xorg >= 7.5 and broken brightness, these patched libSDL binaries may
+help.
+
+* Gamma patched libSDL (i686-linux) +
+  http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download
+
+* Gamma patched libSDL (x86_64-linux) +
+  http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download
+
+
+== Todo
+
+* Add uHexen2's first person camera (and menu item)
+
+* Native CD audio support (if desired). cd_sdl.c doesn't have proper
+  volume controls and SDL2 doesn't support CD audio
+
+
+==  Copyright
+
+* Quake and QuakeSpasm are released under the GNU GENERAL PUBLIC
+  LICENSE Version 2: http://www.gnu.org/licenses/gpl-2.0.html
+
+* QuakeSpasm console background image by AAS, released under the
+  CREATIVE COMMONS PUBLIC LICENSE:
+  http://creativecommons.org/licenses/by/3.0/legalcode
+
+
+== Contact
+
+* QuakeSpasm Project page: +
+  http://sourceforge.net/projects/quakespasm
+
+* Bug reports: +
+  http://sourceforge.net/p/quakespasm/bugs/?source=navbar
+
+* mailto:sezeroz@gmail.com[Ozkan] +
+  mailto:ewasylishen@gmail.com[Eric] +
+  mailto:a.h.vandijk@gmail.com[Sander] +
+  mailto:stevenaaus@yahoo.com[Stevenaaus]
+
+
+== Links
+
+* QuakeSpasm Homepage: http://quakespasm.sourceforge.net
+* Downloads: http://quakespasm.sourceforge.net/download.htm
+* FitzQuake Homepage: http://www.celephais.net/fitzquake
+* Func QuakeSpasm forum: http://www.celephais.net/board/view_thread.php?id=60452
+* Inside3D forums: http://forums.insideqc.com

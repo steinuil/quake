@@ -1,0 +1,707 @@
+Changes in 0.93.1
+-----------------
+
+- Fixed a fog regression which was introduced in 0.93.0.
+
+- Fixed a crash (buffer overflow) with invalid vis data.
+
+- Fixed buttons crushing players in 64-bit builds.
+
+- Change controller movement to use cubic easing by default; added
+  joy_exponent_move" cvar.
+
+- config.cfg is no longer written in case of a Sys_Error.
+
+- Fixed Opus encoded cd tracks not being recognized as ripped tracks.
+
+- Update the third-party libraries. Other fixes/cleanups.
+
+
+Changes in 0.93.0
+-----------------
+
+- Raise default "joy_deadzone_trigger" cvar to 0.2.
+
+- Raise console buffer size to 1MB.
+
+- Raise MAX_STATIC_ENTITIES from 512 to 4096.
+
+- Raise MAX_STACK_DEPTH from 32 to 64.
+
+- Raise command buffer size from 8K to 256K to support large configs.
+
+- Remove MAX_EFRAGS and MAX_MAP_LEAFS limits.
+
+- Remove "Loadgame buffer overflow" limit, which could happen when
+  loading DP or QSS saves.
+
+- Adjust "exceeds standard limit of" debug warnings to include the
+  actual QS limit.
+
+- Change "game" command to now exec quake.rc.
+
+- Change "games" / "mods" commands to list all subdirectories.
+
+- Restore vid_refreshrate from fitzquake-0.85 for SDL2 builds.
+
+- Alpha-masked model support. (MF_HOLEY: 0x4000).
+
+- Invalid skin index now draws skin 0 (WinQuake behaviour) instead of
+  blue checkerboard.
+
+- Change default screenshot format to png. The 'screenshot' command
+  now supports optional format (tga, png or jpg) and quality (1-100)
+  arguments.
+
+- Revert "always run" changes from 0.85.9 and move the QuakeSpasm
+  customizations to a new "cl_alwaysrun" cvar: Set to 1 in order to
+  scale forward/side/up speed by "cl_movespeedkey" (usually 2), and
+  to make "speedkey" act as "slowkey".
+
+- Change "always run" menu option to offer three choices:
+  - off        (cl_alwaysrun 0, cl_forwardspeed 200, cl_backspeed 200)
+  - vanilla    (cl_alwaysrun 0, cl_forwardspeed 400, cl_backspeed 400)
+  - quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
+
+- New "r_scale" cvar. Set to 2, 3, or 4 to render the view at 1/2,
+  1/3, or 1/4 resolution.
+
+- New "r_viewmodel_quake" cvar. Set to 1 for WinQuake gun position
+  (from MarkV).
+
+- New "find" / "apropos" command, searches for commands/cvar names
+  for the given substring (from Spike).
+
+- New "randmap" command for loading a random map.
+
+- New "gl_cshiftpercent_contents", "gl_cshiftpercent_damage",
+  "gl_cshiftpercent_bonus", "gl_cshiftpercent_powerup" cvars for
+  tuning the strength of specic view blends.
+
+- GL2 renderer: use a GLSL shader for world faces. Fixes reports of
+  integrated+discrete GPU laptops having inconsistent fog rendering.
+
+- Fix macOS startup delay (avoid calling gethostbyname() for ".local"
+  hostnames).
+
+- Fix memory corruption in PF_lightstyle with out of bounds
+  lightstyles.
+
+- Fix crash in BoundPoly with polygons extending beyond +/-9999.
+
+- Fix QS window to stay on the current monitor when changing video
+  modes (SDL2 only).
+
+- Fix possible freeze in SV_TouchLinks regardless of what QC does in
+  the touch function.
+
+- Fix for maps with empty strings for vector keys (e.g. "origin");
+  don't read uninitialized memory.
+
+- Support for Open Watcom compiler.
+
+- Update the third-party libraries.
+
+
+Changes in 0.92.1
+-----------------
+
+- Fixed large menu scale factors (was broken in 0.92.0).
+
+- Fixed PAUSE key (was broken in 0.92.0).
+
+- Updated some of the third-party libraries.
+
+
+Changes in 0.92.0
+-----------------
+
+- SDL2 Game Controller support.
+
+- Contrast support with new "contrast" cvar, behaving the same as
+  MarkV. It may be a useful alternative to the existing gamma control
+  for laptops in a bright environment, etc. Raising contrast gives
+  less of a gray/washed out look than raising gamma, but at a
+  disadvantage: colors near white get clipped to white.
+
+- RMQ protocol (999) support, adapted from RMQEngine.
+
+- New "-protocol x" command line option. Accepted values for 'x' are
+  15 (NetQuake), 666 (FitzQuake, default), and 999 (RMQ).
+
+- New "setpos" console command.
+
+- New "vid_borderless" cvar for getting a borderless window.
+
+- Increased MAX_MAP_LEAFS from 65535 to 70000 and MAX_LIGHTMAPS from
+  256 to 512 in order to handle the oms3 map pack.
+
+- Server edicts are now allocated using malloc instead of allocating
+  on the hunk.
+
+- gl_clear now defaults to 1.
+
+- Fix items falling out of the world on oms3.bsp on SSE builds.
+
+- Worked around an OSX 10.6 driver bug when using FSAA, which was
+  leading to an unplayable HOM effect on the rest of the screen.
+
+- Fix wrong trace endpoint from the tracepos console command.
+
+- Updated some of the third-party libraries. Other fixes/clean-ups.
+
+
+Changes in 0.91.0
+-----------------
+
+### Bugfixes
+
+- Fix unwanted fog mode change upon video restart.
+
+- Work around Intel 855 bug in status bar drawing with "r_oldwater 0"
+  and "scr_sbaralpha 0".
+
+- Fix an obscure GLSL bug where changing gamma would result in the
+  screen turning to noise.
+
+- Fix GLSL gamma causing the tiled screen border to turn white when
+  "sizedown" is used.
+
+- Fix an alias model VBO renderer bug where a model not precached
+  during map start wouldn't be drawn.
+
+- Fix the order of OpenGL context creation and window creation in
+  SDL2 video.
+
+- Fix a calling convention issue in windows DPI awareness function
+  pointers.
+
+- Fix a random texture recoloring after video mode change.
+
+- Fix a liquid turning to garbage after several video mode changes
+  and "r_oldwater 0".
+
+- Fix a wrong alpha-sorting bug introduced in 0.90.1.
+
+- Fix "flush" command not reloading mdl's from disk (bug introduced
+  in 0.90.1).
+
+- Prevent a possible buffer overflow in Cbuf_Execute (old Q1/Q2 bug).
+
+- Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).
+
+### Visual improvements
+
+- New cvars r_lavaalpha, r_slimealpha, r_telealpha for fine-tuning
+  specific liquid opacities (from DirectQ/RMQEngine, non-archived,
+  default to 0), and new worldspawn keys _wateralpha, _lavaalpha,
+  _slimealpha, _telealpha, _skyfog (unique to Quakespasm, similar to
+  the behaviour of the "fog" worldspawn key).
+
+- GLSL gamma is now supported on older hardware without NPOT
+  extension.
+
+### Interface improvements
+
+- New r_pos command to show player position.
+
+- NaN detection in traceline with "developer 1" set now warns instead
+  of errors.
+
+### Code cleanup / Other
+
+- Update third-party libraries.
+
+### Raised limits
+
+- Default max_edicts 8192 (was 2048) and no longer saved to
+  config.cfg.
+
+- Default heapsize 256 MB (was 64 MB).
+
+- Default zone 4 MB (was 384 KB).
+
+- Raised MAX_SFX to 1024 (was 512).
+
+
+Changes in 0.90.1
+-----------------
+
+### Bugfixes
+
+- Fix dynamic light artifact where changing lightmap are rendered one
+  frame late (bug introduced in 0.90.0).
+
+- Fix texture memory leak when changing video modes with SDL2.
+
+- Fix rare incorrect mdl lighting on 64-bit builds. (details here:
+  http://forums.insideqc.com/viewtopic.php?f=3&t=5620)
+
+- Fix fullbrights turning black after "kill" command (bug introduced
+  in 0.90.0).
+
+- Clear all fog values on map change to prevent colored fog carrying
+  over to jam3_tronyn.bsp.
+
+- Allow loading saves with } character in quoted strings, fixes issue
+  with retrojam1_skacky.bsp.
+
+- Fix viewmodel not lerping on extended-limit maps.
+
+- Fix crash on out-of-bounds skin number.
+
+### Performance
+
+- Use multithreaded OpenGL on OS X for better performance.
+
+- New, faster mdl renderer using GLSL. Disable with "-noglslalias".
+
+### Visual improvements
+
+- New gamma correction implementation using GLSL. Fixes all known
+  gamma issues (affecting the full display, persisting after
+  quitting, or darkening the screen on OS X). Disable with
+  "-noglslgamma".
+
+- Use high-quality water by default (r_oldwater 0).
+
+- Shadows use stencil buffer to avoid overlapping artifacts (from
+  MarkV.)
+
+- r_noshadow_list cvar added (from MarkV.)
+
+### Interface improvements
+
+- Support pausing demo playback with the "pause" command.
+
+- Autocompletion for "game", "record", "playdemo".
+
+- Experimental windowed fullscreen mode available with
+  vid_desktopfullscreen 1 (only in SDL2 builds, takes effect upon
+  entering fullscreen mode the next time.)
+
+- Silence "exceeded standard limit" messages unless developer cvar is
+  >= 1.
+
+- Some spam moved from developer 1 to 2: "can't find tga/lit/ent",
+  "trying to load ent", "bad chunk length", "meshing",
+  "PR_AlocStringSlots: realloc'ing"
+
+### Code cleanup
+
+- Clean up IDE project files to build on fresh systems.
+
+- Update 3rd-party libraries.
+
+
+Changes in 0.90.0
+-----------------
+
+- Fix issues on Windows systems with DPI scaling.
+
+- Unix/Mac user directories support. Disabled by default,
+  'make DO_USERDIRS=1' to enable it.
+
+- SDL2 support. Disabled by default, 'make USE_SDL2=1' to enable it.
+
+- Revised keyboard input code.
+
+- Revised/improved the 'game' command, i.e. on-the-fly mod changing.
+  It now accepts an optional second argument for mission packs or
+  quoth support i.e. -hipnotic, -rogue, or -quoth. For example, for
+  WarpSpasm: "game warp -quoth"
+
+- Command line: "-game {quoth/hipnotic/rogue}" is now treated the
+  same as -quoth, -hipnotic, or -rogue.
+
+- Console speed now resolution-independent.
+
+- Disabled gl_zfix, which caused glitches and is undesirable for new
+  maps. Replacement .ent files to fix z-fighting for several id1 maps
+  added to quakespasm.pak.
+
+- PF_VarString buffer bumped to 1024, avoids truncated centerprints
+  from the 'In The Shadows' mod.
+
+- Support for opengl non-power-of-two-textures extension (disable
+  with command line: "-notexturenpot".)
+
+- Support for OpenGL vertex buffer objects (VBO, OpenGL 1.5 or newer)
+  for world and brush models (disable with command line: "-novbo".)
+
+- Antialiasing (FSAA) support (command line: -fsaa x, where x can be
+  0, 2, 4, 8).
+
+- Fence textures support.
+
+- Dynamic light speedup. Speedup loading of tga and pcx external
+  images.
+
+- Brush model drawing speedup.
+
+- Support for BSP2 and 2PSB map formats.
+
+- Support for Opus, FLAC, and tracker music (S3M, IT, UMX, etc.), as
+  compile-time options.
+
+- Music and sfx now mixed at 44100 Hz to avoid downsampling music.
+  Low-pass filter applied to the sfx if -sndspeed is 11025 (the
+  default), to preserve the same sound quality as 0.85.9.  New
+  -mixspeed option sets the rate for mixing sfx and music, and output
+  to the OS (default 44100), setting it to 11025 reverts to 0.85.9
+  behaviour. New snd_filterquality cvar, value can be between 1
+  (emulate OS X resampler) and 5 (emulate Windows resampler),
+  controls the sound of the low-pass filter.
+
+- Better Hor+ field of view (FOV) scaling behavior.
+
+- Better cross-map demo playback support.
+
+- Fix screenshots when screen width isn't a multiple of 4.
+
+- Fix a lighting glitch due to floating point precision.
+
+- Fix a looping sounds glitch.
+
+- Fix a vulnerability in file extension handling. Tighten path
+  handling safety.
+
+- Initialize opengl with 24-bit depth buffer at 32 bpp.
+
+- Reset all models upon gamedir changes. (Fixes failures with mods
+  using custom content.)
+
+- Fix broken behavior upon gamedir changes if -basedir is specified
+  on the command line.
+
+- NET_MAXMESSAGE and MAX_MSGLEN limits bumped to 64000.
+
+- MAX_EFRAGS bumped to 4096, and MAX_CHANNELS to 1024.
+
+- MAX_ENT_LEAFS bumped from 16 to 32 to work around disappearing or
+  flickering brush models in some situations. Also, if an entity is
+  visible from MAX_ENT_LEAFS or more leafs, we now always send it to
+  the client.
+
+- Fix cvar cycle command not working sometimes.
+
+- Host_Error upon missing models. (Prevents segmentation faults.)
+
+- Change sv_aim default value to 1 (i.e. turn off autoaim)
+
+- Add 'prev' and 'next' keywords to the 'cd' command.
+
+- Work around a linux cdrom issue (playback might not start for a
+  while after a stop).
+
+- Quakespasm content customization moved from engine-embedded into a
+  new optional quakespasm.pak file.
+
+- Version bumped to 0.90.0 (because Quakespasm has a decent life of
+  it's own)
+
+- Other fixes and clean-ups.
+
+
+Changes in 0.85.9
+-----------------
+
+- Fixes for several undefined behaviors in C code (gcc-4.8 support.)
+
+- Implemented Hor+ style field of view (FOV) scaling, useful for
+  widescreen resolutions. Configured by new cvar fov_adapt: set it to
+  1 and your fov will be scaled automatically according to the
+  resolution. Enabled by default.
+
+- Adjusted string buffers for PR_ValueString and friends to fix
+  crashes with excessively long global strings seen in some rude
+  mods.
+
+- Toned down warning messages from PF_VarString() a bit.
+
+- Fixed Fitzquake's map existence check in changelevel (used to leak
+  file handles which would end up in a Sys_Error() due to consuming
+  all free handles if many maps reside not in pak files.)
+
+- Fixes/cleanups in chat mode handling. Client no longer gets stuck
+  in chat mode upon disconnect.
+
+- Mouse grab/key_dest fixes and key cleanups.
+
+- The "speedkey" now acts as "slowkey" when "always run" is on.
+
+- Support for demo recording after connection to server. (thanks to
+  Baker for a patch)
+
+- Corner case fixes in COM_Parse() for quoted strings and support for
+  C-style /*..*/ comments.
+
+- Changed lightmaps to GL_RGBA instead of GL_RGB.
+
+- Better parse for opengl extensions list (from quakeforge.)
+
+- Vsync saving/loading fixes.
+
+- Fixed pointfile loading.
+
+- Multiple cleanups in gl_vidsdl.c.
+
+- Opus music decoding support (as an optional patch only.)
+
+- Several other minor fixes/cleanups.
+
+
+Changes in 0.85.8
+-----------------
+
+- Made Quake shareware 1.00 and 1.01 versions to be recognized
+  properly.
+
+- Fixed control-character handling in unicode mode. Keyboard input
+  tweaks.
+
+- Made the keypad keys to send separate key events in game mode.
+
+- Text pasting support from OS clipboard to console. (windows and
+  macosx.)
+
+- Support for the Apple (Command) key on macosx.
+
+- Fixed increased (more than 32) dynamic lights.
+
+- Music playback: Made sure that the file's channels count is
+  supported.
+
+- Support for Solaris.
+
+- Switched to using libmad instead of libmpg123 for MP3 playback on
+  Mac OS X.
+
+- Better support for building the Mac OS X version using a makefile,
+  support for cross-compiling on Linux.
+
+- Fixed a minor intermissions glitch.
+
+- Increased string buffer size from 256 to 384 for PF_VarString to
+  work around broken mods such as UQC.
+
+- Restored original behavior for Quake registered version detection.
+
+- Minor demo recording/playback tweaks.
+
+- Minor tweaks to the scale menu option.
+
+- unbindall before loading stored bindings (configurable by new cvar
+  cfg_unbindall, enabled by default.)
+
+- New icon.
+
+- Miscellaneous source code cleanups.
+
+
+Changes in 0.85.7
+-----------------
+
+- Added support for cross-level demo playback
+
+- gl_texturemode is reimplemented as a cvar with a callback and the
+  setting is automatically saved to the config
+
+- Fixed execution of external files without a newline at the end
+
+- Reduced memory usage during reloading of textures
+
+- Fixed compilation on GNU/kFreeBSD (Debian bug #657793)
+
+- Fixed backspace key on Mac OS X
+
+- Disable mouse acceleration in Mac OS X
+
+- Worked around recursive calling of the anisotropic filter callback
+
+- Console word wrap and long input line fixes
+
+- Verified correct compilation by clang (using v3.0)
+
+- Several other small changes mostly invisible to the end-user
+
+
+Changes in 0.85.6
+-----------------
+
+- More work for string buffer safety
+
+- Reverted v0.85.5 change of not allowing deathmatch and coop cvars
+  to be set at the same time (was reported for possibility of causing
+  compatibility issues with mods)
+
+- Several cleanups/changes in the cvar layer
+
+- Minor SDL video fixes.
+
+
+Changes in 0.85.5
+-----------------
+
+- SDL input driver updated adding native keymap and dead key support
+  to the console
+
+- Fixed a crash in net play in maps with extended limits
+
+- Verified successful compilation using gcc-4.6.x
+
+- Added workaround against GL texture flicker (z fighting),
+  controlled by new cvar 'gl_zfix'
+
+- Read video variables early so that a vid_restart isn't necessary
+  after init
+
+- mlook and lookspring fixes
+
+- Added support for loading external entity files, controlled by new
+  cvar 'external_ents'
+
+- Made mp3 playback to allocate system memory instead of zone
+
+- Some updates to the progs interpreter code
+
+- Fixed r_nolerp_list parsing code of fitzquake
+
+- Made sure that deathmatch and coop are not set at the same time
+
+- Several code updates from uHexen2 project, several code cleanups.
+
+
+Changes in 0.85.4
+-----------------
+
+- Implement music (OGG, MP3, WAV) playback
+
+- A better fix for the infamous SV_TouchLinks problem, no more hard
+  lockups with maps such as "whiteroom"
+
+- Add support for mouse buttons 4 and 5
+
+- Fix the "unalias" console command
+
+- Restore the "screen size" menu item
+
+- Fixed an erroneous protocol check in the server code
+
+- Raised the default zone memory size to 384 kb
+
+- Raised the default max_edicts from 1024 to 2048
+
+- Revised lit file loading, the lit file must be from the same game
+  directory as the map itself or from a searchpath with a higher
+  priority
+
+- Fixed rest of the compiler warnings
+
+- Other minor sound and cdaudio updates
+
+
+Changes in 0.85.3
+-----------------
+
+- Fix the "-dedicated" option (thanks Oz) and add platform specific
+  networking code (default) rather than SDL_net
+
+- Much needed OSX framework stuff from Kristian
+
+- Add a persistent history feature (thanks Baker)
+
+- Add a slider for scr_sbaralpha, which now defaults to 0.95
+  (slightly transparent, allowing for a nicer status bar)
+
+- Allow player messages longer than 32 characters
+
+- Sockaddr fix for FreeBSD/OSX/etc networking
+
+- Connect status bar size to the scale slider
+
+- Include an ISNAN (is not-a-number) fix to catch the occassional
+  quake C bug giving traceline problems
+
+- Enumerate options menus
+
+- Add a "prev weapon" menu item (from Sander)
+
+- Small fix to Sound Block/Unblock on win32
+
+- Lots of code fixes (some from uhexen2)
+
+- Sys_Error calls Host_Shutdown
+
+- Added MS Visual Studio support
+
+- Add a "-cd" option to let the CD Player work in dedicated mode, and
+  some other CD tweaks.
+
+
+Changes in 0.85.2
+-----------------
+
+- Replace the old "Screen size" slider with a "Scale" slider
+
+- Don't constantly open and close condebug log
+
+- Heap of C clean-ups
+
+- Fix mapname sorting
+
+- Alias the "mods" command to "games"
+
+- Block/Unblock sound upon focus loss/gain
+
+- NAT fix (networking protocol fix)
+
+- SDLNet_ResolveHost bug-fix allowing connection to ports other than
+  26000
+
+- Bumped array size of sv_main.c::localmodels from 5 to 6 fixing an
+  old fitzquake-0.85 bug which used to cause segfaults depending on
+  the compiler.
+
+- Accept commandline options like "+connect ip:port"
+
+- Add OSX Makefile (tested?)
+
+
+Changes in 0.85.1
+-----------------
+
+- 64 bit CPU support
+
+- Restructured SDL sound driver
+
+- Custom conback
+
+- Tweaked the command line completion and added a map/changelevel
+  autocompletion function
+
+- Alt+Enter toggles fullscreen
+
+- Disable Draw_BeginDisc which causes core dumps when called
+  excessively
+
+- Show helpful info on start-up
+
+- Include real map name (sv.name) and skill in the status bar
+
+- Remove confirm quit dialog
+
+- Don't spam the console with PackFile seek requests
+
+- Default to window mode
+
+- Withdraw console when playing demos
+
+- Don't play demos on program init
+
+- Default Heapsize is 64meg
+
+- Changes to default console alpha, speed
+
+- Changes to cvar persistence gl_flashblend (default 0), r_shadow,
+  r_wateralpha, r_dynamic, r_novis
